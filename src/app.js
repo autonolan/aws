@@ -163,6 +163,7 @@ let isPainting = false;
 let lineWidth = 5;
 let startX;
 let startY;
+let labware_object;
 
 MutationButton.addEventListener('click', (evt) => {
   createNewLabware().then((evt) => {
@@ -174,10 +175,10 @@ MutationButton.addEventListener('click', (evt) => {
 });
 GetDataButton.addEventListener('click', (evt) => {
   getData();
-})
+});
 DeleteLabwareButton.addEventListener('click', (evt) => {
   deleteLabwareEntry();
-})
+});
 DefineLabwareButton.addEventListener('click', (evt) => {
   document.getElementById('define-labware').style.display = "block";
   document.getElementById('LiquidTransfCalc').style.display = "none";
@@ -197,14 +198,14 @@ ProtocolExecButton.addEventListener('click', (evt) => {
   document.getElementById('LiquidTransfCalc').style.display = "none";
   document.getElementById('ProtocolExec').style.display = "block";
   document.getElementById('ProtocolBuild').style.display = "none";
-})
+});
 
 ProtocolBuildButton.addEventListener('click', (evt) => {
   document.getElementById('define-labware').style.display = "none";
   document.getElementById('LiquidTransfCalc').style.display = "none";
   document.getElementById('ProtocolExec').style.display = "none";
   document.getElementById('ProtocolBuild').style.display = "block";
-})
+});
 
 InitializeButton.addEventListener('click', (evt) => {
   let source_name = document.getElementById('source-name');
@@ -217,7 +218,7 @@ DispenseButton.addEventListener('click', (evt) => {
   let dispenseVolume = document.getElementById('dispense-volume').value;
   let wells = document.getElementById('dispense-targets').value.split(`,`);
   updateWellsVolumes("disp", dispenseVolume, wells);
-})
+});
 
 TransferButton.addEventListener('click', (evt) => {
   let transferVolume = document.getElementById('transfer-volume').value;
@@ -225,7 +226,7 @@ TransferButton.addEventListener('click', (evt) => {
   let transferDest = document.getElementById('transfer-dest').value.split(`,`);
   updateWellsVolumes("asp", transferVolume, transferSource);
   updateWellsVolumes("disp", transferVolume, transferDest);
-})
+});
 
 ClearButton.addEventListener('click', (evt) => {
   deleteWellEntries();
@@ -235,12 +236,23 @@ DrawingBoard.addEventListener('mousedown', (evt) => {
   isPainting = true;
   startX = evt.clientX;
   startY = evt.clientY;
-})
+  labware_object = document.getElementById('labware-object').value;
+});
 
 DrawingBoard.addEventListener('mouseup', (evt) => {
   isPainting = false;
-  ctx.strokeRect(startX, startY, 50, 100);
-})
+  if (labware_object == "labware-area") {
+    ctx.rect(startX, startY, evt.clientX, evt.clientY);
+  }
+  if (labware_object == "round-well") {
+    ctx.ellipse(startX, startY, 20, 20, 0, 0, 2*Math.PI);
+  }
+  if (labware_object == "square-well") {
+    ctx.rect(startX, startY, 20, 20);
+  }
+  ctx.stroke();
+  ctx.beginPath();
+});
 
 API.graphql(graphqlOperation(onCreateTodo)).subscribe({
       next: (evt) => {

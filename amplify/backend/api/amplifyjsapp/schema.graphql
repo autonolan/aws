@@ -1,0 +1,26 @@
+type Todo @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  description: String
+}
+
+type Labware @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  well_shape: String!
+  well_dim: Int!
+  row_count: Int!
+  col_count: Int!
+  well_vol: Int!
+  well_bottom: String!
+  well_bottom_dim: Int!
+  well_height: Int!
+}
+
+type Well @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  volume: Int!
+  liquid_level: Int!
+}
+ 

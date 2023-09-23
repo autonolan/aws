@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>AutoNolan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="./style.css" type="text/css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="app">
+      <div class="app-header"></div>
+      <div class="app-body">
+        <!--<a href="./define-labware.html" target="_blank">Define Labware</a>-->
+        <menu>
+          <li><button id="define-labware-button">Define Labware</button></li>
+          <li><button id="liquid-transf-calc-button">Liq. Transf. Calc</button></li>
+          <li><button id="protocol-exec-button">Protocol Exec</button></li>
+          <li><button id="protocol-build-button">Protocol Build</button></li>
+        </menu>
+        <div id="define-labware">
+          <h1>Define Labware</h1>
+          <aside>Input labware properties in the fields below to store a container for pipetting operations.</aside>
+          <ul class="form">
+            <li>
+              <label for="labware-name">Labware Name:</label>
+              <input type="text" id="labware-name" name="labware-name" required minlength="1" maxlength="64" />
+            </li>
+            <li>
+              <label for="well-shape">Well Shape:</label>
+              <select id="well-shape" name="well-shape" required minlength="1" maxlength="10" size="0">
+                <option value="round">round</option>
+                <option value="square">square</option>
+              </select>
+            </li>
+            <li>
+              <label for="rows">Well Rows:</label>
+              <input type="text" id="rows" name="rows" required minlength="1" maxlength="2" />
+            </li>
+            <li>
+              <label for="cols">Labware Columns:</label>
+              <input type="text" id="cols" name="cols" required minlength="1" maxlength="2" />
+            </li>
+          </ul>
+          <div style="display: flex; flex-direction: row; gap: 1em;">
+            <button id="MutationEventButton">Save Labware</button>
+            <button id="GetDataButton">Load Labware</button>
+            <button id="DeleteLabwareButton">Delete Labware</button>
+          </div>
+          <label for="ActivityLog">Activity Log</label>
+          <div id="ActivityLog"></div>
+        </div>
+        <div id="LiquidTransfCalc" style="display: none">
+          <h1>Liquid Transfer Calculator</h1>
+          <aside>
+            Calculate liquid volumes in source and destination labware. Populate labware wells with the Dispense operation.
+            Transfer volumes using the Dispense From operation. Source and destination volumes are stored until the calculator
+            is cleared.
+          </aside>
+          <h2>Initialize Labware</h2>
+          <ul class="form">
+            <label for="source-name">Source Name:</label>
+            <input type="text" id="source-name" name="source-name" required minlength="1" maxlength="64" />
+            <label for="dest-name">Destination Name:</label>
+            <input type="text" id="dest-name" name="dest-name" required minlength="1" maxlength="64" />
+            <label for="dispense-volume">Dispense Volume:</label>
+            <input type="text" id="dispense-volume" name="dispense-volume" required minlength="1" maxlength="64" />
+            <label for="dispense-targets">Dispense Targets:</label>
+            <input type="text" id="dispense-targets" name="dispense-targets" required minlength="1" maxlength="64" />
+          </ul>
+          <h2>Transfer Volumes</h2>
+          <ul class="form">
+            <label for="transfer-volume">Transfer Volume:</label>
+            <input type="text" id="transfer-volume" name="transfer-volume" required minlength="1" maxlength="64" />
+            <label for="transfer-source">Transfer Source:</label>
+            <input type="text" id="transfer-source" name="transfer-source" required minlength="1" maxlength="64" />
+            <label for="transfer-dest">Transfer Destination:</label>
+            <input type="text" id="transfer-dest" name="transfer-dest" required minlength="1" maxlength="64" />
+          </ul>
+          <div style="display: flex; flex-direction: row; gap: 1em;">
+            <button id="InitializeButton">Initialize</button>
+            <button id="DispenseButton">Dispense</button>
+            <button id="TransferButton">Transfer</button>
+            <button id="ClearButton">Clear</button>
+          </div>
+          <div style="display: flex; flex-direction: row">
+            <label for="SourceView">Source Wells:</label>
+            <div id="SourceView"></div>
+            <label for="DestView">Destination Wells:</label>
+            <div id="DestView"></div>
+          </div>
+        </div>
+        <div id="ProtocolExec" style="display: none">
+          <h1>Protocol Executor</h1>
+          <aside>
+            The protocol executor will interpret a list of instructions and define labware and simulate liquid transfers to execute a
+            complete experiment.
+          </aside>
+          <h2>Protocol Syntax:</h2>
+          <p>
+            Protocols can be defined as a list of instructions with the syntax outlined below:
+            <ul>
+              <li>Define,"labware_name","well_shape","rows","columns",Define</li>
+              <li>Source,"labware_name",Source</li>
+              <li>Dest,"labware_name",Dest</li>
+              <li>Disp,"labware_name","volume","wells",Disp</li>
+              <li>Transfer,Source,"source_well",Source,Dest"dest_well","dest_well","dest_well",Dest,Transfer</li>
+            </ul>
+          </p>
+          <div class="protocol-view">
+            <textarea class="protocol-text" id="protocol-text"></textarea>
+          </div>
+          <div style="display: flex; flex-direction: row; gap: 1em;">
+            <button id="RunProtocolButton">Run</button>
+          </div>
+        </div>
+        <div id="ProtocolBuild" style="display: none">
+          <h1>Protocol Builder</h1>
+          <aside>
+            The protocol builder is a GUI that lets the user intuitively create protocols with well to well connections.
+          </aside>
+          <div id="toolbar">
+            <label for="labware-object">Labware Objects:</label>
+            <select id="labware-object" name="labware-object" size="0">
+              <option value="labware-area">labware area</option>
+              <option value="round-well">round well</option>
+              <option value="square-well">square well</option>
+            </select>
+            <label for="transfer-wire">Transfer Wires:</label>
+            <input id="transfer-wire" name="transfer-wire" type="number">
+            <label for="wire-color">Wire Color:</label>
+            <input id="wire-color" name="wire-color" type="color">
+          </div>
+          <div class="drawing-board">
+            <canvas id="drawing-board"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="main.bundle.js"></script>
+  </body>
+</html>

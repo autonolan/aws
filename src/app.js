@@ -153,18 +153,24 @@ const SourceView = document.getElementById('SourceView');
 const DestView = document.getElementById('DestView');
 const DrawingBoard = document.getElementById('drawing-board');
 const Toolbar = document.getElementById('toolbar');
-//const ctx = DrawingBoard.getContext('2d');
-//const WireCtx = DrawingBoard.getContext('2d');
+const AddLabwareObjectButton = document.getElementById('AddLabwareObjectButton');
+const AddObjectRowButton = document.getElementById('AddObjectRowButton');
 const drawboardOffsetX = DrawingBoard.offsetLeft;
 const drawboardOffsetY = DrawingBoard.offsetTop;
 //DrawingBoard.width = window.innerWidth-drawboardOffsetX;
 //DrawingBoard.height = window.innerHeight-drawboardOffsetY;
 
-let isPainting = false;
-let lineWidth = 5;
+//var labware_area = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+//var round_well = document.createElementNS('http://www.w3.org/2000/svg', 'circle');;
 let startX;
 let startY;
 let labware_object;
+let labwareCornerX = 5;
+let labwareCornerY = 5;
+let squareWellCornerX = 10;
+let squareWellCornerY = 10;
+let roundWellCX = 10;
+let roundWellCY = 10;
 
 MutationButton.addEventListener('click', (evt) => {
   createNewLabware().then((evt) => {
@@ -233,45 +239,52 @@ ClearButton.addEventListener('click', (evt) => {
   deleteWellEntries();
 });
 
-DrawingBoard.addEventListener('mousedown', (evt) => {
-  isPainting = true;
+/*DrawingBoard.addEventListener('mousedown', (evt) => {
   startX = evt.clientX;
   startY = evt.clientY;
   labware_object = document.getElementById('labware-object').value;
   console.log("mousedown", labware_object);
 });
+*/
+AddObjectRowButton.addEventListener('click', (evt) => {
+  squareWellCornerX = 10;
+  squareWellCornerY += 30;
+  roundWellCX = 10;
+  roundWellCY += 30;
+})
 
-DrawingBoard.addEventListener('mouseup', (evt) => {
-  isPainting = false;
+AddLabwareObjectButton.addEventListener('click', (evt) => {
+  labware_object = document.getElementById('labware-object').value;
   if (labware_object == "labware-area") {
-    console.log("mouseup", evt.clientX, evt.clientY);
-    var labware_area = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    labware_area.setAttributeNS(null, 'x', evt.clientX);
-    labware_area.setAttributeNS(null, 'y', evt.clientY);
+    let labware_area = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    labware_area.setAttributeNS(null, 'x', labwareCornerX);
+    labware_area.setAttributeNS(null, 'y', labwareCornerY);
     labware_area.setAttributeNS(null, 'width', 160);
     labware_area.setAttributeNS(null, 'height', 240);
     DrawingBoard.appendChild(labware_area);
+    labwareCornerX += 170;
   }
   if (labware_object == "round-well") {
-    console.log("mouseup", evt.clientX, evt.clientY);
-    var round_well = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    round_well.setAttributeNS(null, 'cx', evt.clientX);
-    round_well.setAttributeNS(null, 'cy', evt.clientY);
+    let round_well = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    round_well.setAttributeNS(null, 'cx', roundWellCX);
+    round_well.setAttributeNS(null, 'cy', roundWellCY);
     round_well.setAttributeNS(null, 'r', 10);
     DrawingBoard.appendChild(round_well);
+    roundWellCX += 15;
+    round_well.addEventListener('click', (evt) => {
+      console.log("round well clicked!");
+    });
   }
   if (labware_object == "square-well") {
-    console.log("mouseup", evt.clientX, evt.clientY);
     var square_well = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    square_well.setAttributeNS(null, 'x', evt.clientX);
-    square_well.setAttributeNS(null, 'y', evt.clientY);
+    square_well.setAttributeNS(null, 'x', squareWellCornerX);
+    square_well.setAttributeNS(null, 'y', squareWellCornerY);
     square_well.setAttributeNS(null, 'width', 20);
     square_well.setAttributeNS(null, 'height', 20);
-    square_well.setAttributeNS(null, 'style', `fill:"red"`);
+    square_well.setAttributeNS(null, 'style', "fill:red;");
     DrawingBoard.appendChild(square_well);
+    squareWellCornerX += 25;
   }
-  //ctx.stroke();
-  //ctx.beginPath();
 });
 
 API.graphql(graphqlOperation(onCreateTodo)).subscribe({

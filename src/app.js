@@ -261,6 +261,7 @@ AddLabwareObjectButton.addEventListener('click', (evt) => {
     labware_area.setAttributeNS(null, 'y', labwareCornerY);
     labware_area.setAttributeNS(null, 'width', 160);
     labware_area.setAttributeNS(null, 'height', 240);
+    labware_area.setAttributeNS(null, 'style', "fill:gray");
     DrawingBoard.appendChild(labware_area);
     labwareCornerX += 170;
   }
@@ -269,10 +270,12 @@ AddLabwareObjectButton.addEventListener('click', (evt) => {
     round_well.setAttributeNS(null, 'cx', roundWellCX);
     round_well.setAttributeNS(null, 'cy', roundWellCY);
     round_well.setAttributeNS(null, 'r', 10);
+    round_well.setAttributeNS(null, 'style', "fill:blue");
     DrawingBoard.appendChild(round_well);
     roundWellCX += 15;
     round_well.addEventListener('click', (evt) => {
-      console.log("round well clicked!");
+      console.log(round_well.getAttributeNS(null, 'cx'));
+      console.log(round_well.getAttributeNS(null, 'cy'));
     });
   }
   if (labware_object == "square-well") {

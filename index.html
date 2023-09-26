@@ -119,22 +119,30 @@
           <aside>
             The protocol builder is a GUI that lets the user intuitively create protocols with well to well connections.
           </aside>
-          <div id="toolbar">
-            <label for="labware-object">Labware Objects:</label>
-            <select id="labware-object" name="labware-object" size="0">
-              <option value="labware-area">labware area</option>
-              <option value="round-well">round well</option>
-              <option value="square-well">square well</option>
-            </select>
-            <button id="AddLabwareObjectButton">Add</button>
-            <button id="AddObjectRowButton">Add Row</button>
-            <label for="transfer-wire">Transfer Wires:</label>
-            <input id="transfer-wire" name="transfer-wire" type="number">
-            <label for="wire-color">Wire Color:</label>
-            <input id="wire-color" name="wire-color" type="color">
-          </div>
-          <div class="drawing-board">
-            <svg id="drawing-board" width="800" height="800"></svg>
+          <div style="display: flex; flex-direction: row">
+            <div id="toolbar">
+              <label for="labware-object">Labware Objects:</label>
+              <select id="labware-object" name="labware-object" size="0">
+                <option value="labware-area">labware area</option>
+                <option value="round-well">round well</option>
+                <option value="square-well">square well</option>
+              </select>
+              <label for="object-count">Count:</label>
+              <input type="number" id="object-count" name="object-count" required minlength="1" maxlength="2" />
+              <button id="AddLabwareObjectButton">Add</button>
+              <button id="AddObjectRowButton">Add Row</button>
+              <label for="transfer-wire">Transfer Wires:</label>
+              <input id="transfer-wire" name="transfer-wire" type="number">
+              <label for="wire-color">Wire Color:</label>
+              <input id="wire-color" name="wire-color" type="color">
+            </div>
+            <div class="drawing-board">
+              <svg id="drawing-board" width="800" height="800"></svg>
+            </div>
+            <div class="protocol-assembly" style="display: flex; flex-direction: column;">
+              <label for="assembled-protocol">Assembled Protocol:</label>
+              <textarea name="assembled-protocol" rows="50" cols="70" readonly="true"></textarea>
+            </div>
           </div>
         </div>
       </div>

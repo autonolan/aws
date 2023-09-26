@@ -69,3 +69,9 @@ ul.form {
     width: 70px;
     background-color: #ff9900;
 }
+.drawing-board {
+    width: 800px;
+}
+.protocol-assembly {
+    width: 200px;
+}

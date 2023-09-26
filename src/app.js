@@ -256,14 +256,22 @@ AddObjectRowButton.addEventListener('click', (evt) => {
 AddLabwareObjectButton.addEventListener('click', (evt) => {
   labware_object = document.getElementById('labware-object').value;
   if (labware_object == "labware-area") {
-    let labware_area = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    labware_area.setAttributeNS(null, 'x', labwareCornerX);
-    labware_area.setAttributeNS(null, 'y', labwareCornerY);
-    labware_area.setAttributeNS(null, 'width', 160);
-    labware_area.setAttributeNS(null, 'height', 240);
-    labware_area.setAttributeNS(null, 'style', "fill:gray");
-    DrawingBoard.appendChild(labware_area);
-    labwareCornerX += 170;
+    let labwareObjectCount = document.getElementById('object-count').value;
+    console.log('labware object count is:', labwareObjectCount);
+    for (let i = 0; i < labwareObjectCount; i++) {
+      let labware_area = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      labware_area.setAttributeNS(null, 'x', labwareCornerX);
+      labware_area.setAttributeNS(null, 'y', labwareCornerY);
+      labware_area.setAttributeNS(null, 'width', 160);
+      labware_area.setAttributeNS(null, 'height', 240);
+      labware_area.setAttributeNS(null, 'style', "fill:gray");
+      if (labwareCornerX >= 500) {
+        labwareCornerX = 5;
+        labwareCornerY += 245;
+      }
+      DrawingBoard.appendChild(labware_area);
+      labwareCornerX += 170;
+    }
   }
   if (labware_object == "round-well") {
     let round_well = document.createElementNS('http://www.w3.org/2000/svg', 'circle');

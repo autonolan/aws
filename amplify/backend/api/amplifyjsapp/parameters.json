@@ -2,5 +2,6 @@
   "AppSyncApiName": "amplifyjsapp",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
-  "AuthModeLastUpdated": "2023-09-22T20:18:54.803Z"
+  "AuthModeLastUpdated": "2023-09-22T20:18:54.803Z",
+  "APIKeyExpirationEpoch": 1763753141
 }
